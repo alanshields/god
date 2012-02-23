@@ -43,7 +43,9 @@ module God
         self.info = []
 
         pid = self.pid
-        active = pid && System::Process.new(pid).exists?
+        pid_exists = System::Process.new(pid).exists?
+        active = pid && pid_exists
+        applog(self.watch, :debug, "#{self.watch.name} testing if PID #{pid} (from file #{self.pid_file}) exists: #{pid_exists.inspect}")
 
         if (self.running && active)
           self.info.concat(["process is running"])
